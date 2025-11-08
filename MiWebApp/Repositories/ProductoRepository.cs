@@ -1,11 +1,11 @@
+    using System.Reflection.Metadata.Ecma335;
 using Microsoft.Data.Sqlite;
-using espacioProducto;
-namespace espacioProductoRepository;
+using SQLitePCL;
 
+namespace Models;
 public class ProductoRepository
 {
-    private string connectionString = "Data Source=DB/Tienda_final.db;";
-
+    string connectionString = "Data Source=DB/Tienda_final.db";
     public int Alta(Producto producto)
     {
         int nuevoId = 0;
@@ -13,41 +13,46 @@ public class ProductoRepository
         using (var connection = new SqliteConnection(connectionString))
         {
             connection.Open();
+
             string sql = "INSERT INTO Productos (Descripcion, Precio) VALUES (@desc, @prec)";
 
             using (var command = new SqliteCommand(sql, connection))
             {
-                command.Parameters.AddWithValue("@desc", producto.descripcion);
-                command.Parameters.AddWithValue("@prec", producto.precio);
+                command.Parameters.AddWithValue("@desc", producto.Descripcion);
+                command.Parameters.AddWithValue("@prec", producto.Precio);
+
+                command.ExecuteNonQuery();
+
+                command.CommandText = "SELECT last_insert_rowid()";
                 nuevoId = Convert.ToInt32(command.ExecuteScalar());
             }
+
         }
+
         return nuevoId;
     }
 
     public List<Producto> GetAll()
     {
         List<Producto> listaProductos = new List<Producto>();
-
         using (var connection = new SqliteConnection(connectionString))
         {
             connection.Open();
+
             string sql = "SELECT idProducto, Descripcion, Precio FROM Productos";
 
-            using (var command = new SqliteCommand(sql, connection))
+            var command = new SqliteCommand(sql, connection);
+
             using (var reader = command.ExecuteReader())
             {
                 while (reader.Read())
                 {
                     listaProductos.Add(new Producto
                     {
-
-                        idProducto = reader.GetInt32(reader.GetOrdinal("idProducto")),
-                        descripcion = reader.GetString(reader.GetOrdinal("Descripcion")),
-                        precio = reader.GetDecimal(reader.GetOrdinal("Precio")),
-
+                        IdProducto = reader.GetInt32(reader.GetOrdinal("IdProducto")),
+                        Descripcion = reader.GetString(reader.GetOrdinal("Descripcion")),
+                        Precio = reader.GetDouble(reader.GetOrdinal("Precio")),
                     });
-
                 }
             }
         }
@@ -61,32 +66,33 @@ public class ProductoRepository
         {
             connection.Open();
 
-            string sql = "DELETE FROM Productos WHERE idProducto = @identificador";
+            string sql = "DELETE FROM Productos WHERE idProducto = @id";
 
             using (var command = new SqliteCommand(sql, connection))
             {
-                command.Parameters.AddWithValue("@identificador", id);
+                command.Parameters.AddWithValue("@id", id);
                 resultado = command.ExecuteNonQuery();
             }
-
         }
         return resultado;
     }
 
-    public int ModificarProducto(int id, Producto producto)
+    public int ModificarProducto(Producto producto)
     {
         int resultado;
+
         using (var connection = new SqliteConnection(connectionString))
         {
             connection.Open();
 
-            string sql = "UPDATE Productos SET Descripcion = @desc, Precio = @prec WHERE idProducto = @identificador";
+            string sql = @"UPDATE productos SET Descripcion = @desc, Precio = @prec WHERE idProducto = @id";
 
             using (var command = new SqliteCommand(sql, connection))
             {
-                command.Parameters.AddWithValue("@identificador", id);
-                command.Parameters.AddWithValue("@desc", producto.descripcion);
-                command.Parameters.AddWithValue("@prec", producto.precio);
+                
+                command.Parameters.AddWithValue("@desc", producto.Descripcion);
+                command.Parameters.AddWithValue("@prec", producto.Precio);
+                command.Parameters.AddWithValue("@id", producto.IdProducto);
                 resultado = command.ExecuteNonQuery();
             }
         }
@@ -96,11 +102,12 @@ public class ProductoRepository
     public Producto Detalles(int id)
     {
         Producto producto = new Producto();
+
         using (var connection = new SqliteConnection(connectionString))
         {
             connection.Open();
 
-            string sql = "SELECT * FROM Productos WHERE idProducto = @identificador";
+            string sql = "SELECT * FROM productos WHERE idProducto = @identificador";
 
             using (var command = new SqliteCommand(sql, connection))
             {
@@ -109,13 +116,15 @@ public class ProductoRepository
                 {
                     if (reader.Read())
                     {
-                        producto.descripcion = reader.GetString(reader.GetOrdinal("Descripcion"));
-                        producto.precio = reader.GetDecimal(reader.GetOrdinal("Precio"));
+                        producto.IdProducto = reader.GetInt32(reader.GetOrdinal("idProducto"));
+                        producto.Descripcion = reader.GetString(reader.GetOrdinal("Descripcion"));
+                        producto.Precio = reader.GetDouble(reader.GetOrdinal("Precio"));
                     }
-
                 }
             }
+
+            return producto;
         }
-        return producto;
     }
+
 }

@@ -2,7 +2,32 @@
     ViewData["Title"] = "Productos";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome index de Productos</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+
+@model List<Models.Producto>
+
+<section class="Text-center">
+<a asp-action="Create" class="btn btn-success mb-3">Nuevo Producto</a>
+<h1 class="display-4">Productos</h1>
+
+    <table class="table table-striped">
+        <thead>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Precio</th>
+            <th>Acciones</th>
+        </thead>
+        <tbody>
+            @foreach(var producto in Model){
+                <tr>
+                    <td>@producto.IdProducto</td>
+                    <td>@producto.Descripcion</td>
+                    <td>@producto.Precio</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@producto.IdProducto" class="btn btn-warning btn-sm">Editar</a>
+                        <a asp-action="Delete" asp-route-id="@producto.IdProducto" class="btn btn-warning btn-sm">Eliminar</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</section>

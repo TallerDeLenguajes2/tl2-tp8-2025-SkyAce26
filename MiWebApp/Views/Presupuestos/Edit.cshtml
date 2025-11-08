@@ -1,0 +1,17 @@
+@model Models.Presupuesto
+
+<form asp-controller="Presupuestos" asp-action="Edit" method="post">
+<input type="hidden" asp-for="@Model.IdPresupuesto">
+    <section class="form-group">
+        <label asp-for="@Model.NombreDestinatario">Nombre del destinatario:</label>
+        <input asp-for="@Model.NombreDestinatario" class="form-control">
+    </section>
+
+    <section class="form-group">
+        <label asp-for="@Model.FechaCreacion">Fecha de creacion:</label>
+        <input asp-for="@Model.FechaCreacion" class="form-control">
+    </section>
+    
+    <button type="sumbit" class="btn tbn-success mt-3">Guardar cambios</button>
+    <a asp-action="Index" class="btn btn-secondary mt-3">Cancelar</a>
+</form>

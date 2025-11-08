@@ -1,8 +1,27 @@
-@{
-    ViewData["Title"] = "Home Page";
-}
+@model List<Models.Presupuesto>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome index de Presupuestos</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<section class="Text-center">
+<a asp-action="Create" class="btn btn-success mb-3">Nuevo Presupuesto</a>
+<h1 class="display-4">Presupuestos</h1>
+    <table class="table table-striped">
+        <thead>
+            <th>ID</th>
+            <th>Destinatario</th>
+            <th>Fecha creacion</th>
+        </thead>
+        <tbody>
+            @foreach(var presupuesto in Model){
+                <tr>
+                    <td>@presupuesto.IdPresupuesto</td>
+                    <td>@presupuesto.NombreDestinatario</td>
+                    <td>@presupuesto.FechaCreacion.ToString("dd/MM/yyyy")</td>
+                    <td>
+
+                        <a asp-action="Details" asp-route-id="@presupuesto.IdPresupuesto" class="btn btn-warning btn-sm">Ver detalle</a>
+                        <a asp-action="Edit" asp-route-id="@presupuesto.IdPresupuesto" class="btn btn-warning btn-sm">Editar</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</section>

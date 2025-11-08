@@ -1,0 +1,22 @@
+@model Models.Producto
+
+<section class="container mt-4">
+    <h2>Agregar Producto</h2>
+
+    <form asp-action="Create" method="post">
+        <article class="form-group mb-3">
+            <label asp-for="Descripcion" class="form-label"/>
+            <input asp-for="Descripcion" class="form-control"/>
+            <span asp-validation-for="Descripcion" class="text-danger"></span>
+        </article>
+
+        <article class="form-group mb-3">
+            <label asp-for="Precio" class="form-label"/>
+            <input asp-for="Precio" class="form-control"/>
+            <span asp-validation-for="Precio" class="text-danger"></span>
+        </article>
+
+        <button type="submit" class="btn btn-primary">Guardar</button>
+        <a asp-action="Index" class="btn btn-secondary">Volver</a>
+    </form>
+</section>

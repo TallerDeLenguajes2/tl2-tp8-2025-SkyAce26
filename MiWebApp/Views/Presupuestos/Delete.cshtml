@@ -1,0 +1,17 @@
+@model Models.Presupuesto
+
+<form asp-controller="Presupuestos" asp-action="DeleteConfirmado" method="post">
+<input type="hidden" asp-for="IdPresupuesto">
+    <section class="card">
+        <article class="card-body">
+            <p>Desea eliminar el presupuesto de @Model.NombreDestinatario?</p>
+        </article>
+    </section>
+
+    <section class="d-flex justify-content-center">
+        <button type="submit" class="btn btn-danger">Si</button>
+        <a href="Index" class="btn btn-primary">No</a>
+    </section>
+
+</form>
+

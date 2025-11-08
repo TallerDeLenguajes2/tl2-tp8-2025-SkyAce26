@@ -1,0 +1,26 @@
+@model Models.Producto
+
+<h2>Eliminar producto</h2>
+
+<form asp-action="Delete" method="post">
+<input type="hidden" asp-for="IdProducto">
+<input asp-for="IdProducto" value="@Model.IdProducto" class="form-comtrol" readonly/>
+    <section asp-validation-summary="ModelOnly" class="text-danger"></section>
+
+    <section class="form-group">
+        <label asp-for="Descripcion">Descripcion</label>
+        <input asp-for="Descripcion" value="@Model.Descripcion" class="form-comtrol" readonly/>
+    </section>
+
+    <section class="form-group">
+        <label asp-for="Precio">Precio</label>
+        <input asp-for="Precio" value="@Model.Precio" class="form-comtrol" type="number" readonly/>
+    </section>
+
+    <section class="mt-3">
+        <button type="submit" class="btn btn-danger">Eliminar</button>
+        <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+    </section>
+    
+    <input type="hidden" asp-for="IdProducto"/>
+</form>
